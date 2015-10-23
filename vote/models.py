@@ -12,6 +12,7 @@ class Video(models.Model):
     name = models.CharField(max_length=254)
     filename = models.CharField(max_length=254)
     category = models.ForeignKey(Category, related_name='videos')
+    description = models.TextField(blank=True)
 
 
 class Student(models.Model):
