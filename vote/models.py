@@ -6,6 +6,7 @@ from rest_framework import serializers
 class Category(models.Model):
     name = models.CharField(max_length=254)
     background = models.CharField(max_length=254)
+    rank = models.PositiveSmallIntegerField(default=1)
 
 
 class Video(models.Model):

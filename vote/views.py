@@ -9,6 +9,9 @@ from rest_framework.permissions import AllowAny
 from vote.models import *
 
 FKZ_KEY = b"ksj87sh0hsb14xn98" # b"WG7BF4pm"
+RETURN_PAGE = b"http://localhost:3000/"
+# FKZ_KEY = b"WG7BF4pm"
+# RETURN_PAGE = b"http://jtx/vaneau/"
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -60,7 +63,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     @decorators.list_route(methods=['get'])
     def frankiz_url(self, request):
         ts = str(int(time.time())).encode()
-        page = "http://localhost:3000/".encode() # "http://jtx/vaneau/"
+        page = RETURN_PAGE
         r = json.dumps(["names","promo"]).encode()
         h = hashlib.md5(ts + page + FKZ_KEY + r).hexdigest()
         return Response("http://www.frankiz.net/remote?" + parse.unquote(parse.urlencode([('timestamp',ts),('site',page),('hash',h),('request',r)])), 200)
@@ -87,7 +90,6 @@ def frankiz_check(request):
         raise NotAuthenticated()
 
     data = json.loads(response.decode())
-    request.session['username'] = data['hruid']
 
     return request
 
