@@ -8,10 +8,8 @@ from rest_framework.permissions import AllowAny
 
 from vote.models import *
 
-FKZ_KEY = b"ksj87sh0hsb14xn98" # b"WG7BF4pm"
+FKZ_KEY = b"ksj87sh0hsb14xn98"
 RETURN_PAGE = b"http://localhost:3000/"
-# FKZ_KEY = b"WG7BF4pm"
-# RETURN_PAGE = b"http://jtx/vaneau/"
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
