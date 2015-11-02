@@ -29,7 +29,7 @@ class Student(models.Model):
     promo = models.CharField(max_length=10)
 
     def __str__(self):
-        return "%s %s (X%d)" % (self.lastname, self.firstname, self.promo)
+        return "%s %s (X%s)" % (self.lastname, self.firstname, self.promo)
 
 
 class Vote(models.Model):
