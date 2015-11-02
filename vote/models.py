@@ -8,6 +8,9 @@ class Category(models.Model):
     background = models.CharField(max_length=254)
     rank = models.PositiveSmallIntegerField(default=1)
 
+    def __str__(self):
+        return self.name
+
 
 class Video(models.Model):
     name = models.CharField(max_length=254)
@@ -15,12 +18,18 @@ class Video(models.Model):
     category = models.ForeignKey(Category, related_name='videos')
     description = models.TextField(blank=True)
 
+    def __str__(self):
+        return "%s (%s)" % (self.name, self.category.name)
+
 
 class Student(models.Model):
     hruid = models.CharField(max_length=254, unique=True)
     lastname = models.CharField(max_length=254)
     firstname = models.CharField(max_length=254)
     promo = models.CharField(max_length=10)
+
+    def __str__(self):
+        return "%s %s (X%d)" % (self.lastname, self.firstname, self.promo)
 
 
 class Vote(models.Model):
