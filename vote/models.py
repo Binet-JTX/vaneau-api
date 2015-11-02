@@ -40,6 +40,9 @@ class Vote(models.Model):
     class Meta:
         unique_together = ('student', 'category', )
 
+    def __str__(self):
+        return "%s a voté pour \"%s\" dans la catégorie \"%s\"" % (self.student.__str__(), self.video.__str__(), self.category.__str__())
+
 
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
