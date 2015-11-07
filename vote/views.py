@@ -23,7 +23,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     serializer_class = StudentSerializer
 
     @decorators.list_route(methods=['post'])
-    @decorators.permission_classes(AllowAny)
+    @decorators.permission_classes((AllowAny, ))
     def frankiz_auth_check(self, request):
         import logging
         logger = logging.getLogger(__name__)
@@ -61,7 +61,7 @@ class StudentViewSet(viewsets.ModelViewSet):
         return Response(response_data, 200)
 
     @decorators.list_route(methods=['post'])
-    @decorators.permission_classes(AllowAny)
+    @decorators.permission_classes((AllowAny, ))
     def frankiz_url(self, request):
         ts = str(int(time.time())).encode()
         page = request.data.get('page', 'http://jtx/vaneau/').encode()
