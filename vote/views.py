@@ -22,15 +22,14 @@ class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
-    @decorators.list_route(methods=['post'])
-    @decorators.permission_classes((AllowAny, ))
+    @decorators.list_route(methods=['get'])
     def frankiz_auth_check(self, request):
         import logging
         logger = logging.getLogger(__name__)
 
         student = None
         response_data = {'valid': True, 'student': student}
-        RETURN_PAGE = request.data.get('page', 'http://jtx/vaneau/').encode()
+        RETURN_PAGE = ('http://' + request.get_host() + '/vaneau/').encode()
         logger.error(RETURN_PAGE)
 
         if not "timestamp" in request.query_params.keys() or not "response" in request.query_params.keys() or not "hash" in request.query_params.keys():
@@ -60,11 +59,10 @@ class StudentViewSet(viewsets.ModelViewSet):
 
         return Response(response_data, 200)
 
-    @decorators.list_route(methods=['post'])
-    @decorators.permission_classes((AllowAny, ))
+    @decorators.list_route(methods=['get'])
     def frankiz_url(self, request):
         ts = str(int(time.time())).encode()
-        page = request.data.get('page', 'http://jtx/vaneau/').encode()
+        page = ('http://' + request.get_host() + '/vaneau/').encode()
         r = json.dumps(["names","promo"]).encode()
         h = hashlib.md5(ts + page + FKZ_KEY + r).hexdigest()
         return Response("http://www.frankiz.net/remote?" + parse.unquote(parse.urlencode([('timestamp',ts),('site',page),('hash',h),('request',r)])), 200)
