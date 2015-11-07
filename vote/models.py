@@ -41,15 +41,15 @@ class Vote(models.Model):
         unique_together = ('student', 'category', )
 
     def __str__(self):
-        return "%s a voté pour \"%s\" dans la catégorie \"%s\"" % (self.student.__str__(), self.video.__str__(), self.category.__str__())
-
+        return "%s a voté pour \"%s\"" % (self.student.__str__(), self.video.__str__())
+        
 
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
         extra_kwargs = {
             'student': {'write_only': True},
-            'category': {'write_only': True}, 
+            'category': {'write_only': True},
             'video': {'write_only': True}
         }
 

@@ -9,7 +9,6 @@ from rest_framework.permissions import AllowAny
 from vote.models import *
 
 FKZ_KEY = b"ksj87sh0hsb14xn98"
-RETURN_PAGE = b"http://localhost:3000/"
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -30,8 +29,10 @@ class StudentViewSet(viewsets.ModelViewSet):
 
         student = None
         response_data = {'valid': True, 'student': student}
+        RETURN_PAGE = request.get_host().encode()
+        logger.error(RETURN_PAGE)
 
-        if not "timestamp" in request.query_params.keys() or not "response" in request.query_params.keys() or not "hash" in request.query_params.keys(): 
+        if not "timestamp" in request.query_params.keys() or not "response" in request.query_params.keys() or not "hash" in request.query_params.keys():
             logger.error('KEYS')
             response_data["valid"] = False
 
@@ -49,17 +50,19 @@ class StudentViewSet(viewsets.ModelViewSet):
 
         if response_data["valid"]:
             data = json.loads(response.decode())
-            try: 
+            try:
                 student = Student.objects.get(hruid=data["hruid"])
             except Student.DoesNotExist:
                 student = Student.objects.create(hruid=data["hruid"], lastname=data["lastname"], firstname=data["firstname"], promo=data["promo"])
             finally:
                 response_data["student"] = StudentSerializer(student).data
-        
+
         return Response(response_data, 200)
 
     @decorators.list_route(methods=['get'])
     def frankiz_url(self, request):
+        RETURN_PAGE = request.get_host().encode()
+
         ts = str(int(time.time())).encode()
         page = RETURN_PAGE
         r = json.dumps(["names","promo"]).encode()
@@ -71,7 +74,7 @@ def frankiz_check(request):
     import logging
     logger = logging.getLogger(__name__)
 
-    if not "timestamp" in request.query_params.keys() or not "response" in request.query_params.keys() or not "hash" in request.query_params.keys(): 
+    if not "timestamp" in request.query_params.keys() or not "response" in request.query_params.keys() or not "hash" in request.query_params.keys():
         logger.error('KEYS')
         raise NotAuthenticated()
 
@@ -128,4 +131,3 @@ class VoteViewSet(viewsets.ModelViewSet):
             return Response("Not authenticated", 401)
 
         return super(VoteViewSet, self).destroy(request, pk)
-

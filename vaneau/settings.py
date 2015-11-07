@@ -25,7 +25,12 @@ SECRET_KEY = '5-s6@208_u=8zj@nudzz8q21-_ag7)$z^gmj&!e)k%0e7bg16e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'jtx',
+    'jtx.eleves.polytechnique.fr',
+    'binet-jtx.com',
+    'www.binet-jtx.com',
+]
 
 
 # Application definition
